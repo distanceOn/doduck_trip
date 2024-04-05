@@ -1,10 +1,9 @@
 import * as S from './style'
+import { useAppSelector } from '@/shared/model/reduxHooks'
 import { LoginForm, RegisterForm } from '@/widgets/auth'
 
-type AuthPageProps = {
-  type: 'login' | 'register'
-}
+export const AuthPage = () => {
+  const { type } = useAppSelector(state => state.auth)
 
-export const AuthPage = ({ type }: AuthPageProps) => (
-  <S.Page>{type === 'login' ? <LoginForm /> : <RegisterForm />}</S.Page>
-)
+  return <S.Page>{type === 'login' ? <LoginForm /> : <RegisterForm />}</S.Page>
+}

@@ -1,13 +1,17 @@
 import { Route, Routes } from 'react-router-dom'
 
+import { MainLayout } from '@/app/layouts/MainLayout'
 import { AuthPage } from '@/pages/auth'
 
 // import { ProtectedAuth, ProtectedContent } from './ProtectedRoutes'
 
 export const AppRouter = () => (
   <Routes>
-    <Route path='/login' element={<AuthPage type='login' />} />
-    <Route path='/register' element={<AuthPage type='register' />} />
+    <Route element={<MainLayout />}>
+      <Route path='/login' element={<AuthPage />} />
+      <Route path='/register' element={<AuthPage />} />
+    </Route>
+
     {/* <Route element={<ProtectedAuth />}>
       <Route path='/login' element={<Entry />} />
       <Route path='/register' element={<Register />} />
