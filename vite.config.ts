@@ -1,34 +1,39 @@
-import dns from 'dns'
-import { URL, fileURLToPath } from 'node:url'
-
 import react from '@vitejs/plugin-react'
+import { resolve } from 'node:path'
 import { defineConfig, loadEnv } from 'vite'
-import checker from 'vite-plugin-checker'
-import mkcert from 'vite-plugin-mkcert'
-import tsconfigPaths from 'vite-tsconfig-paths'
+import svgrPlugin from 'vite-plugin-svgr'
 
-dns.setDefaultResultOrder('verbatim')
-
+// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd())
-
+  const env = loadEnv(mode, process.cwd(), '')
   return {
-    base: env.VITE_BASE_URL,
     plugins: [
-      react(),
-      tsconfigPaths(),
-      mkcert(),
-      checker({ typescript: true }),
+      react({
+        jsxImportSource: '@emotion/react',
+        babel: {
+          plugins: ['@emotion'],
+        },
+      }),
+      svgrPlugin({
+        svgrOptions: {
+          icon: true,
+        },
+      }),
     ],
+    server: {
+      port: 3000,
+    },
+    preview: {
+      port: 3030,
+      open: true,
+    },
     resolve: {
       alias: {
-        '@': fileURLToPath(new URL('./src', import.meta.url)),
+        '@': resolve(__dirname, 'src'),
       },
     },
-    server: {
-      open: true,
-      https: false,
-      host: true,
+    define: {
+      'process.env.VITE_BASE_URL': JSON.stringify(env.VITE_BASE_URL),
     },
   }
 })
