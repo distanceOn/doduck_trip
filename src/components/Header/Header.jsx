@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Row, Col, Drawer, Button } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [visible, setVisible] = useState(false);
@@ -9,24 +10,19 @@ const Header = () => {
   const onClose = () => setVisible(false);
 
   return (
-    <header className="bg-gray-800 text-white py-4 px-8 flex items-center justify-between">
+    <header className="bg-gray-800 text-white py-4 px-8 flex items-center justify-between fixed top-0 left-0 w-full z-10 shadow-md">
       <div className="flex items-center">
-        {/* Логотип */}
         <img src="/your-logo.png" alt="Логотип" className="h-10" />
       </div>
 
       <Row className="hidden md:flex">
         <Col span={24}>
-          {/* Ссылки навигации */}
-          <a href="#" className="mr-6 hover:text-gray-400">
-            Главная
-          </a>
-          <a href="#" className="mr-6 hover:text-gray-400">
+          <Link to="/" className="mr-6 hover:text-gray-400">
             О нас
-          </a>
-          <a href="#" className="mr-6 hover:text-gray-400">
-            Контакты
-          </a>
+          </Link>
+          <Link to="/login" className="mr-6 hover:text-gray-400">
+            Войти
+          </Link>
         </Col>
       </Row>
 
@@ -45,15 +41,12 @@ const Header = () => {
         onClose={onClose}
         visible={visible}
       >
-        <a href="#" className="block py-2 hover:text-gray-400">
-          Главная
-        </a>
-        <a href="#" className="block py-2 hover:text-gray-400">
+        <Link to="/" className="block py-2 hover:text-gray-400">
           О нас
-        </a>
-        <a href="#" className="block py-2 hover:text-gray-400">
-          Контакты
-        </a>
+        </Link>
+        <Link to="/login" className="mr-6 hover:text-gray-400">
+          Войти
+        </Link>
       </Drawer>
     </header>
   );

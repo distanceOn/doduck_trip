@@ -4,7 +4,9 @@ import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {
   return (
-    <Layout>
+    <Layout
+      style={{ width: "100vw", height: "fit-content", minHeight: "100vh" }}
+    >
       <Header />
       <Outlet />
     </Layout>
