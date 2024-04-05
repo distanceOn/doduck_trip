@@ -1,1 +1,3 @@
-export { AuthPage } from './AuthPage/AuthPage'
+import { AuthPage } from './AuthPage/AuthPage'
+
+export { AuthPage }
