@@ -1,7 +1,15 @@
 import { useState } from "react";
 import { Card, Tabs, Form, Input, Button } from "antd";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/slices/userSlice";
 
 const AuthPage = () => {
+  const dispatch = useDispatch();
+
+  const handleSubmit = () => {
+    dispatch(login());
+  };
+
   const [activeTab, setActiveTab] = useState("1");
 
   const handleTabChange = (key) => {
@@ -42,7 +50,12 @@ const AuthPage = () => {
             <Input.Password />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
+            <Button
+              onClick={handleSubmit}
+              type="primary"
+              htmlType="submit"
+              block
+            >
               Войти
             </Button>
           </Form.Item>

@@ -7,7 +7,7 @@ const HomePage = () => {
   useEffect(() => {
     console.log(isLoggedIn);
   }, []);
-  return <div>HomePage</div>;
+  return <div> {isLoggedIn ? "YESLOGIN" : "NOLOGIN"}</div>;
 };
 
 export default HomePage;
