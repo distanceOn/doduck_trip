@@ -1,13 +1,7 @@
-from fastapi import FastAPI
+import app.main
+from data.config import LOG_LEVEL
 
-app = FastAPI()
+if __name__ == "__main__":
+    import uvicorn
 
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+    uvicorn.run(app.main.app, host="127.0.0.1", port=8080, log_level=LOG_LEVEL.lower())

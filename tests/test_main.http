@@ -1,0 +1,35 @@
+# Test your FastAPI endpoints
+
+GET http://127.0.0.1:8000/
+Accept: application/json
+
+###
+
+GET http://127.0.0.1:8000/hello/User
+Accept: application/json
+
+###
+
+### Логин
+POST http://127.0.0.1:8080/signup
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin"
+}
+
+
+### Получить корневое сообщение (после авторизации)
+POST http://localhost:8000/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin"
+}
+
+
+### Выйти
+GET http://127.0.0.1:8080/logout
+Cookie: <Вставьте значение cookie, используемое при логине, здесь>
