@@ -6,10 +6,6 @@ import { login } from "../../store/slices/userSlice";
 const AuthPage = () => {
   const dispatch = useDispatch();
 
-  const handleSubmit = () => {
-    dispatch(login());
-  };
-
   const [activeTab, setActiveTab] = useState("1");
 
   const handleTabChange = (key) => {
@@ -18,6 +14,7 @@ const AuthPage = () => {
 
   const onFinish = (values) => {
     console.log("Success:", values);
+    dispatch(login());
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -50,12 +47,7 @@ const AuthPage = () => {
             <Input.Password />
           </Form.Item>
           <Form.Item>
-            <Button
-              onClick={handleSubmit}
-              type="primary"
-              htmlType="submit"
-              block
-            >
+            <Button type="primary" htmlType="submit" block>
               Войти
             </Button>
           </Form.Item>

@@ -2,8 +2,11 @@ import { useState } from "react";
 import { Row, Col, Drawer, Button } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../../store/reduxHooks";
 
 const Header = () => {
+  const { isLoggedIn } = useAppSelector((state) => state.user);
+
   const [visible, setVisible] = useState(false);
 
   const showDrawer = () => setVisible(true);
@@ -16,14 +19,25 @@ const Header = () => {
       </div>
 
       <Row className="hidden md:flex">
-        <Col span={24}>
-          <Link to="/" className="mr-6 hover:text-gray-400">
-            О нас
-          </Link>
-          <Link to="/login" className="mr-6 hover:text-gray-400">
-            Войти
-          </Link>
-        </Col>
+        {isLoggedIn ? (
+          <Col span={24}>
+            <Link to="/" className="mr-6 hover:text-gray-400">
+              Карта
+            </Link>
+            <Link to="/login" className="mr-6 hover:text-gray-400">
+              Выход
+            </Link>
+          </Col>
+        ) : (
+          <Col span={24}>
+            <Link to="/" className="mr-6 hover:text-gray-400">
+              О нас
+            </Link>
+            <Link to="/login" className="mr-6 hover:text-gray-400">
+              Войти
+            </Link>
+          </Col>
+        )}
       </Row>
 
       {/* Кнопка меню для мобильной версии */}
@@ -41,12 +55,25 @@ const Header = () => {
         onClose={onClose}
         visible={visible}
       >
-        <Link to="/" className="block py-2 hover:text-gray-400">
-          О нас
-        </Link>
-        <Link to="/login" className="mr-6 hover:text-gray-400">
-          Войти
-        </Link>
+        {isLoggedIn ? (
+          <>
+            <Link to="/" className="block py-2 hover:text-gray-400">
+              Карта
+            </Link>
+            <Link to="/login" className="mr-6 hover:text-gray-400">
+              Выход
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link to="/" className="block py-2 hover:text-gray-400">
+              О нас
+            </Link>
+            <Link to="/login" className="mr-6 hover:text-gray-400">
+              Войти
+            </Link>
+          </>
+        )}
       </Drawer>
     </header>
   );
