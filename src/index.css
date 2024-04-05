@@ -1,0 +1,120 @@
+@tailwind;
+@tailwind components;
+@tailwind utilities;
+* {
+  padding: 0px;
+  margin: 0px;
+  border: none;
+  scroll-behavior: smooth;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+a,
+a:link,
+a:visited {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+aside,
+nav,
+footer,
+header,
+section,
+main {
+  display: block;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+ul,
+ul li {
+  list-style: none;
+  text-decoration: none;
+}
+img {
+  vertical-align: top;
+}
+
+address {
+  font-style: normal;
+}
+input,
+textarea,
+button,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background-color: transparent;
+}
+
+input::-ms-clear {
+  display: none;
+}
+button,
+input[type="submit"] {
+  display: inline-block;
+  box-shadow: none;
+  background-color: transparent;
+  background: none;
+  cursor: pointer;
+}
+input:focus,
+input:active,
+button:focus,
+button:active {
+  outline: none;
+}
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+label {
+  cursor: pointer;
+}
+legend {
+  display: block;
+}
+input {
+  -webkit-appearance: none;
+  appearance: none;
+}
+/* ::selection {
+    background-color: #247c7a;
+    color: azure;
+  } */
+::-webkit-contacts-auto-fill-button {
+  opacity: 0;
+}
+
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  box-shadow: 0 0 0 1000px #f4f5f7 inset;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #ffffff inset !important;
+  box-shadow: 0 0 0 30px #ffffff inset !important;
+  -webkit-text-fill-color: black !important;
+}
+* {
+  -webkit-tap-highlight-color: transparent; /* Отключает подсветку при касании на iOS */
+  -webkit-touch-callout: none; /* Отключает контекстное меню на iOS */
+  user-select: none; /* Отключает возможность выделения текста и элементов */
+}
