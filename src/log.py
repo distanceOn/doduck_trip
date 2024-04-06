@@ -12,7 +12,7 @@ class InterceptHandler(logging.Handler):
 
 
 logger.add(
-    "app.log",
+    "src.log",
     rotation="10 MB",
     compression="zip",
     retention="10 days",

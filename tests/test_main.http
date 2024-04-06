@@ -3,33 +3,36 @@
 GET http://127.0.0.1:8000/
 Accept: application/json
 
+
 ###
 
-GET http://127.0.0.1:8000/hello/User
+### Регистрация пользователя
+POST http://127.0.0.1:8000/signup
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "email": "admin@example.com",
+  "password": "adminpassword"
+}
+
+### Успешный вход в систему
+### Авторизация пользователя через Basic Auth
+POST http://127.0.0.1:8080/login
+Authorization: Basic YWRtaW46YWRtaW5wYXNzd29yZA==
 Accept: application/json
 
+
+### Неуспешный вход в систему
+POST http://127.0.0.1:8000/login
+Content-Type: application/json
+Authorization: Basic d3Jvbmd1c2VyOndyb25ncGFzc3dvcmQ=
+
+{
+  "username": "wronguser",
+  "password": "wrongpassword"
+}
+
 ###
-
-### Логин
-POST http://127.0.0.1:8080/signup
-Content-Type: application/json
-
-{
-  "username": "admin",
-  "password": "admin"
-}
-
-
-### Получить корневое сообщение (после авторизации)
-POST http://localhost:8000/login
-Content-Type: application/json
-
-{
-  "username": "admin",
-  "password": "admin"
-}
-
-
-### Выйти
-GET http://127.0.0.1:8080/logout
-Cookie: <Вставьте значение cookie, используемое при логине, здесь>
+GET http://127.0.0.1:8080/api/v1/auth/protected
+Cookie: session_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTI0Nzk2MzMsInVzZXJfaWQiOjF9.ce4lZIz1Mhp82gx_cVtOdXOTuuv6eRT2LToDWtzhVXE

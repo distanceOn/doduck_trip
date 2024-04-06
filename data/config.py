@@ -20,3 +20,5 @@ SECRET_KEY = env.str("SECRET_KEY", secrets.token_urlsafe(32))
 ALGORITHM = "HS256"
 LOG_DIR = env.str("LOG_DIR", "logs")
 LOG_LEVEL = env.str("LOG_LEVEL", "INFO")
+
+IMGBB_API_KEY = "f3a926444454558ba86f22fd5b20003e"
