@@ -1,45 +1,61 @@
-import { Map } from "@pbe/react-yandex-maps";
-import { useEffect, useState } from "react";
+import { useYMaps } from "@pbe/react-yandex-maps";
+import { List } from "antd";
+import { useEffect, useRef } from "react";
+import { NavLink } from "react-router-dom";
+
+const points = [
+  { coords: [45.03547, 38.975313], address: "Краснодар", id: 1 },
+  { coords: [45.0457, 38.98], address: "Что то", id: 2 },
+];
 
 export const CustomMap = () => {
-  const getUserLocation = () => {
-    return new Promise((resolve, reject) => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            resolve({
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            });
-          },
-          (error) => {
-            reject(error);
-          }
-        );
-      } else {
-        reject(new Error("Geolocation is not supported by this browser."));
-      }
-    });
-  };
-
-  const [userLocation, setUserLocation] = useState(null);
+  const mapRef = useRef(null);
+  const ymaps = useYMaps(["Map", "Placemark", "Polyline"]);
 
   useEffect(() => {
-    getUserLocation()
-      .then((location) => setUserLocation(location))
-      .catch((error) => console.error("Error getting location:", error));
-  }, []);
+    if (!ymaps || !mapRef.current) {
+      return;
+    }
 
-  if (!userLocation) {
-    return <div>Получение местоположения...</div>;
-  }
+    const map = new ymaps.Map(mapRef.current, {
+      center: [45.03547, 38.975313],
+      zoom: 10,
+    });
 
+    points.forEach((point) => {
+      const placemark = new ymaps.Placemark(point.coords, {
+        balloonContent: point.address,
+      });
+      map.geoObjects.add(placemark);
+    });
+
+    const route = new ymaps.Polyline(
+      points.map((point) => point.coords),
+      {
+        strokeColor: "#0000FF",
+        strokeWidth: 2,
+      }
+    );
+    map.geoObjects.add(route);
+  }, [ymaps]);
   return (
-    <Map
-      defaultState={{
-        center: [userLocation.latitude, userLocation.longitude],
-        zoom: 9,
-      }}
-    />
+    <div>
+      <div
+        ref={mapRef}
+        style={{
+          width: "100%",
+          height: "300px",
+        }}
+      ></div>
+      <List
+        itemLayout="horizontal"
+        dataSource={points}
+        renderItem={(item) => (
+          <List.Item>
+            <NavLink to={"/places/spot/" + item.id}>{item.address}</NavLink>
+          </List.Item>
+        )}
+      />
+    </div>
   );
 };

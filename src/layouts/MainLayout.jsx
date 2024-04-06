@@ -6,6 +6,7 @@ const MainLayout = () => {
   return (
     <Layout
       style={{ width: "100vw", height: "fit-content", minHeight: "100vh" }}
+      className=" flex justify-center"
     >
       <Header />
       <Outlet />
