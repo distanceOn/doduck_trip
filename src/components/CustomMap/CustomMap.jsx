@@ -52,7 +52,7 @@ export const CustomMap = () => {
         dataSource={points}
         renderItem={(item) => (
           <List.Item>
-            <NavLink to={"/places/spot/" + item.id}>{item.address}</NavLink>
+            <NavLink to={"/places/" + item.id}>{item.address}</NavLink>
           </List.Item>
         )}
       />

@@ -24,6 +24,9 @@ const Header = () => {
             <Link to="/" className="mr-6 hover:text-gray-400">
               Карта
             </Link>
+            <Link to="/places" className="mr-6 hover:text-gray-400">
+              Места
+            </Link>
             <Link to="/login" className="mr-6 hover:text-gray-400">
               Выход
             </Link>
@@ -59,6 +62,9 @@ const Header = () => {
           <>
             <Link to="/" className="block py-2 hover:text-gray-400">
               Карта
+            </Link>
+            <Link to="/login" className="mr-6 hover:text-gray-400">
+              Места
             </Link>
             <Link to="/login" className="mr-6 hover:text-gray-400">
               Выход
