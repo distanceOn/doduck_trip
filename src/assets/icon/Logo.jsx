@@ -1,8 +1,8 @@
-const Logo = ({ width, height, className }) => {
+const Logo = ({ w, h, className }) => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={w}
+      height={h}
       viewBox="0 0 512 512"
       fill="none"
       className={className}

@@ -2,6 +2,7 @@ import { useYMaps } from "@pbe/react-yandex-maps";
 import { List } from "antd";
 import { useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
+import mapStyles from "../../assets/mapStyles.json";
 
 const points = [
   { coords: [45.03547, 38.975313], address: "Краснодар", id: 1 },
@@ -20,7 +21,35 @@ export const CustomMap = () => {
     const map = new ymaps.Map(mapRef.current, {
       center: [45.03547, 38.975313],
       zoom: 10,
+      ...mapStyles,
     });
+    // const layer = new YMapDefaultSchemeLayer({
+    //   customization: [
+    //     {
+    //       tags: {
+    //         all: ["water"],
+    //       },
+    //       elements: "geometry",
+    //       stylers: [
+    //         {
+    //           opacity: 0,
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       tags: {
+    //         any: ["poi", "transit_location"],
+    //       },
+    //       elements: "label.text.fill",
+    //       stylers: [
+    //         {
+    //           color: "#0000DD",
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // });
+    // map.addChild(layer);
 
     points.forEach((point) => {
       const placemark = new ymaps.Placemark(point.coords, {
@@ -39,23 +68,28 @@ export const CustomMap = () => {
     map.geoObjects.add(route);
   }, [ymaps]);
   return (
-    <div>
-      <div
-        ref={mapRef}
-        style={{
-          width: "100%",
-          height: "300px",
-        }}
-      ></div>
-      <List
-        itemLayout="horizontal"
-        dataSource={points}
-        renderItem={(item) => (
-          <List.Item>
-            <NavLink to={"/places/" + item.id}>{item.address}</NavLink>
-          </List.Item>
-        )}
-      />
+    <div className="flex flex-col items-center justify-center w-full px-8 ">
+      <div className="shadow-sm w-full rounded-xl">
+        <div
+          ref={mapRef}
+          style={{
+            width: "100%",
+            height: "400px",
+            borderRadius: "10px",
+          }}
+        ></div>
+
+        <List
+          className="p-2"
+          itemLayout="horizontal"
+          dataSource={points}
+          renderItem={(item) => (
+            <List.Item>
+              <NavLink to={"/places/" + item.id}>{item.address}</NavLink>
+            </List.Item>
+          )}
+        />
+      </div>
     </div>
   );
 };

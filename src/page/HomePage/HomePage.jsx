@@ -10,12 +10,8 @@ const HomePage = () => {
     console.log(isLoggedIn);
   }, []);
   return (
-    <Layout className="pt-20 flex  justify-center align-middle  h-full ">
-      <Row gutter={16}>
-        <Col xs={24} sm={12} md={8} className="bg-gray-100 p-4">
-          {isLoggedIn ? <CustomMap /> : "NOLOGIN"}
-        </Col>
-      </Row>
+    <Layout className=" flex  justify-center  bg-[#EFF4EF]">
+      {isLoggedIn ? <CustomMap /> : "NOLOGIN"}
     </Layout>
   );
 };

@@ -5,8 +5,13 @@ import { Outlet } from "react-router-dom";
 const MainLayout = () => {
   return (
     <Layout
-      style={{ width: "100vw", height: "fit-content", minHeight: "100vh" }}
-      className=" flex justify-center"
+      style={{
+        width: "100vw",
+        height: "fit-content",
+        minHeight: "100vh",
+        backgroundColor: "#eff4ef ",
+      }}
+      className=" flex justify-center bg-[#eff4ef]"
     >
       <Header />
       <Outlet />

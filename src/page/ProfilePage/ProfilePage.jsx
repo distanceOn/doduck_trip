@@ -1,5 +1,5 @@
 const ProfilePage = () => {
-  return <div>ProfilePage</div>;
+  return <div className="bg=[#EFF4EF]">ProfilePage</div>;
 };
 
 export default ProfilePage;
