@@ -1,13 +1,33 @@
+@font-face {
+  font-family: "Shoebox-ToTheLeft";
+  src: url("./src/assets/fonts/Shoebox-ToTheLeft.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Shoebox-ToTheRight";
+  src: url("./assets/font/shoebox /Shoebox-ToTheRight.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
 @tailwind;
 @tailwind components;
 @tailwind utilities;
+.about-background {
+  background-image: url("./assets/background/Bg.svg");
+  background-size: cover;
+}
+
 * {
   padding: 0px;
   margin: 0px;
   border: none;
   scroll-behavior: smooth;
 }
-
+body {
+  @apply bg-[#EFF4EF];
+}
 *,
 *::before,
 *::after {

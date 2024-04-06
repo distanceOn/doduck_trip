@@ -21,35 +21,9 @@ export const CustomMap = () => {
     const map = new ymaps.Map(mapRef.current, {
       center: [45.03547, 38.975313],
       zoom: 10,
-      ...mapStyles,
     });
-    // const layer = new YMapDefaultSchemeLayer({
-    //   customization: [
-    //     {
-    //       tags: {
-    //         all: ["water"],
-    //       },
-    //       elements: "geometry",
-    //       stylers: [
-    //         {
-    //           opacity: 0,
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       tags: {
-    //         any: ["poi", "transit_location"],
-    //       },
-    //       elements: "label.text.fill",
-    //       stylers: [
-    //         {
-    //           color: "#0000DD",
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // });
-    // map.addChild(layer);
+    // const layer = new ymaps.YMapDefaultSchemeLayer(...mapStyles);
+    // map.layers.add(layer);
 
     points.forEach((point) => {
       const placemark = new ymaps.Placemark(point.coords, {

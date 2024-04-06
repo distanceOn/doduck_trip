@@ -10,6 +10,11 @@ export default {
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
+        "shoebox-left": ['"Shoebox-ToTheLeft"', "sans-serif"],
+        "shoebox-right": ['"Shoebox-ToTheRight"', "sans-serif"],
+      },
+      screens: {
+        xs: "425px",
       },
     },
   },

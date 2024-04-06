@@ -96,7 +96,7 @@ const AuthPage = () => {
   ];
 
   return (
-    <div className="flex justify-center items-center min-h-screenbg=[#EFF4EF]">
+    <div className="flex justify-center items-center md:pt-[20%] pt-[35%]">
       <Card className="w-full max-w-md shadow-md">
         <Tabs activeKey={activeTab} onChange={handleTabChange} items={items} />
       </Card>

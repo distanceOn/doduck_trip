@@ -15,7 +15,7 @@ export const PlaceGallery = () => {
   const filteredCards = cardsData.filter((card) => card.type === currentTab);
 
   return (
-    <div className="container mx-auto px-4 md:px-8">
+    <div className="container mx-auto px-4 md:px-8 md:pt-14">
       <Tabs
         activeKey={currentTab}
         onChange={handleTabChange}
