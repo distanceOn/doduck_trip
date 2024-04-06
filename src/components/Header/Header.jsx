@@ -16,7 +16,7 @@ const Header = () => {
 
   const isActive = (path) => activeLink === path;
   const linkClass = (path) =>
-    `flex flex-col md:flex-row items-center justify-center font-sans transition-all  px-[10px ] mb:px-[30px]  py-[9px] hover:text-[#FF8058] rounded-lg md:hover:text-[#BBCAC9]  ${
+    `flex flex-col md:flex-row items-center justify-center font-sans transition-all  px-[10px ] mb:px-[30px]  py-[6px] hover:text-[#FF8058] rounded-lg md:hover:text-[#BBCAC9]  ${
       activeLink === path
         ? "md:bg-[#FFFFFF] text-[#1C4D4B]"
         : "md:text-white text-[#BBCAC9]"
@@ -43,7 +43,7 @@ const Header = () => {
                 w="24px"
                 h="24px"
                 className={
-                  "flex items-center justify-center md:mr-2 mb-1 md:mb-0 "
+                  "flex items-center justify-center md:mx-3 mb-1 md:mb-0 "
                 }
               />
               <p className="flex items-center justify-center px-2 font-bold ">
@@ -61,7 +61,7 @@ const Header = () => {
                 w="24px"
                 h="24px"
                 className={
-                  "flex items-center justify-center md:mr-2 mb-1 md:mb-0"
+                  "flex items-center justify-center md:mx-3 mb-1 md:mb-0 "
                 }
               />
               <p className="flex items-center justify-center px-2 font-bold">
@@ -77,7 +77,7 @@ const Header = () => {
                 color={iconColor("/login")}
                 h="22px"
                 className={
-                  "flex items-center justify-center md:mr-2 mb-1 md:mb-0"
+                  "flex items-center justify-center md:mx-3 mb-1 md:mb-0 "
                 }
               />
               <p className="flex items-center justify-center px-2 font-bold">
@@ -97,7 +97,7 @@ const Header = () => {
                 h="24px"
                 w="24px"
                 className={
-                  "flex items-center justify-center md:mr-2 mb-1 md:mb-0"
+                  "flex items-center justify-center md:mx-3 mb-1 md:mb-0 "
                 }
               />
               <p className="flex items-center justify-center px-2 font-bold">
@@ -115,7 +115,7 @@ const Header = () => {
                 h="24px"
                 w="24px"
                 className={
-                  "flex items-center justify-center md:mr-2 mb-1 md:mb-0"
+                  "flex items-center justify-center md:mx-3 mb-1 md:mb-0 "
                 }
               />
               <p className="flex items-center justify-center px-2 font-bold">
