@@ -18,6 +18,10 @@
   background-image: url("./assets/background/Bg.svg");
   background-size: cover;
 }
+.profile-background {
+  background-image: url("./assets/background/BgProfile.svg");
+  background-size: cover;
+}
 
 * {
   padding: 0px;

@@ -7,7 +7,7 @@ import {
   photo5,
   photo6,
 } from "../../assets/img/index";
-import { Dots } from "../../assets/icon/index";
+
 const AboutPage = () => {
   return (
     <div className="absolute top-0 left-0 about-background w-full h-full ">
@@ -29,7 +29,7 @@ const AboutPage = () => {
       </div>
       <div className="flex items-center justify-center mt-[350px] sm:mt-[450px] mb-[200px]">
         <div className="flex flex-col sm:flex-row sm:w-[555px] xs:w-[390px] w-[280px]">
-          <div className="h-48 w-74 flex flex-wrap justify-between">
+          <div className=" w-74 flex flex-wrap justify-between">
             <div className="flex justify-around w-full mt-[-6rem]">
               <img
                 src={photo1}
@@ -54,15 +54,33 @@ const AboutPage = () => {
               <img src={photo5} alt="photo" className="w-16 h-16 rounded" />
               <img src={photo6} alt="photo" className="w-16 h-16 rounded" />
             </div>
-
-            <Dots className="w-20 h-8 " />
           </div>
-          <div>
-            <h className="">
+          <div className="flex flex-col mt-5 sm:mt-[-6rem] sm:w-60 w-74 h-72 sm:ml-5 ml-0">
+            <h className=" text-3xl font-sans text-[#161C2D] font-bold">
               Выберите рекомендуемый маршрут или создайте свой.
             </h>
+            <p className="font-sans text-[#161C2D]  opacity-70  mt-3">
+              Безопасные путешествия с удобной стоянкой у каждой
+              достопримечательности.
+            </p>
+            <p className="font-sans text-[#161C2D] opacity-70 mt-3">
+              Единая система навигации ко всем пит-стопам, хабам и резортам
+              края.
+            </p>
           </div>
         </div>
+      </div>
+      <div className="flex items-center justify-center w-full">
+        <div className="flex flex-col mt-5 sm:mt-0 sm:w-[240px] w-[296px] h-72 sm:ml-5 ml-0 ">
+          <h className=" text-3xl font-sans text-[#161C2D] font-bold">
+            Удобная бронь и оплата прямо в пути!
+          </h>
+          <p className="font-sans text-[#161C2D]  opacity-70  mt-3">
+            Подберëм ближайшую стоянку для вас и вашего транспорта. Сотни
+            экскурсий, мест для отдыха кафе и ресторанов в единой системе
+          </p>
+        </div>
+        <div className=" w-74 flex "></div>
       </div>
     </div>
   );
