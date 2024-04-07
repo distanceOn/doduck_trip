@@ -7,6 +7,7 @@ import LogoText from "./LogoText";
 import IconInfo from "./Info";
 import IconLogin from "./Login";
 import Dots from "./Dots";
+import Rectangle from "./Rectangle";
 export {
   Logo,
   IconLabel,
@@ -17,4 +18,5 @@ export {
   IconInfo,
   IconLogin,
   Dots,
+  Rectangle,
 };

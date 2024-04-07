@@ -77,7 +77,7 @@ const Header = () => {
               </p>
             </Link>
             <Link
-              to="/login"
+              to="/profile"
               className={linkClass("/profile")}
               onClick={() => setActiveLink("/profile")}
             >
