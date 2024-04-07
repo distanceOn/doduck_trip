@@ -34,7 +34,17 @@ export const CustomMap = () => {
   const mapRef = useRef(null);
   const [road, setRoad] = useState(roads[0]);
   const [selectedRouteId, setSelectedRouteId] = useState(1);
+  useEffect(() => {
+    // Code to manipulate the map, existing in your useEffect
 
+    // Removing Leaflet attribution
+    const leafletAttribution = document.querySelector(
+      ".leaflet-control-attribution"
+    );
+    if (leafletAttribution) {
+      leafletAttribution.style.display = "none";
+    }
+  }, [road]);
   useEffect(() => {
     if (!mapRef.current) {
       return;
