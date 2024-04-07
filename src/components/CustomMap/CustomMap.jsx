@@ -1,8 +1,15 @@
-import { useYMaps } from "@pbe/react-yandex-maps";
-import { List } from "antd";
 import { useEffect, useRef } from "react";
+import L from "leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Polyline,
+  Popup,
+} from "react-leaflet";
+import { List } from "antd";
 import { NavLink } from "react-router-dom";
-import mapStyles from "../../assets/mapStyles.json";
+import "leaflet/dist/leaflet.css"; // Импортируем CSS Leaflet
 
 const points = [
   { coords: [45.03547, 38.975313], address: "Краснодар", id: 1 },
@@ -11,59 +18,64 @@ const points = [
 
 export const CustomMap = () => {
   const mapRef = useRef(null);
-  const ymaps = useYMaps(["Map", "Placemark", "Polyline"]);
 
   useEffect(() => {
-    if (!ymaps || !mapRef.current) {
+    if (!mapRef.current) {
       return;
     }
 
-    const map = new ymaps.Map(mapRef.current, {
-      center: [45.03547, 38.975313],
-      zoom: 10,
-    });
-    // const layer = new ymaps.YMapDefaultSchemeLayer(...mapStyles);
-    // map.layers.add(layer);
+    const map = mapRef.current;
 
+    // Добавление точек на карту
     points.forEach((point) => {
-      const placemark = new ymaps.Placemark(point.coords, {
-        balloonContent: point.address,
-      });
-      map.geoObjects.add(placemark);
+      const marker = new L.marker(point.coords).addTo(map);
+      marker.bindPopup(point.address);
     });
 
-    const route = new ymaps.Polyline(
+    // Построение маршрута
+    const polyline = new L.polyline(
       points.map((point) => point.coords),
       {
-        strokeColor: "#0000FF",
-        strokeWidth: 2,
+        color: "#0000FF",
+        weight: 2,
       }
-    );
-    map.geoObjects.add(route);
-  }, [ymaps]);
-  return (
-    <div className="flex flex-col items-center justify-center w-full px-8 ">
-      <div className="shadow-sm w-full rounded-xl">
-        <div
-          ref={mapRef}
-          style={{
-            width: "100%",
-            height: "400px",
-            borderRadius: "10px",
-          }}
-        ></div>
+    ).addTo(map);
 
-        <List
-          className="p-2"
-          itemLayout="horizontal"
-          dataSource={points}
-          renderItem={(item) => (
-            <List.Item>
-              <NavLink to={"/places/" + item.id}>{item.address}</NavLink>
-            </List.Item>
-          )}
+    // Устанавливаем границы карты
+    map.fitBounds(polyline.getBounds());
+  }, []);
+
+  return (
+    <div className=" z-0 flex flex-col items-center justify-center w-full px-8 ">
+      <MapContainer
+        center={[45.03547, 38.975313]}
+        zoom={13}
+        style={{ width: "100%", height: "400px", borderRadius: "10px" }}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
-      </div>
+        {points.map((point) => (
+          <Marker key={point.id} position={point.coords}>
+            <Popup>{point.address}</Popup>
+          </Marker>
+        ))}
+        <Polyline
+          pathOptions={{ color: "#0000FF", weight: 2 }}
+          positions={points.map((point) => point.coords)}
+        />
+      </MapContainer>
+      <List
+        className="p-2"
+        itemLayout="horizontal"
+        dataSource={points}
+        renderItem={(item) => (
+          <List.Item>
+            <NavLink to={"/places/" + item.id}>{item.address}</NavLink>
+          </List.Item>
+        )}
+      />
     </div>
   );
 };
