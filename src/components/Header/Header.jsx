@@ -32,9 +32,12 @@ const Header = () => {
 
   return (
     <header className="fixed md:top-0 md:bottom-auto bottom-0 left-0 w-full z-10  py-4 px-8 flex items-center justify-between bg-[#fff] md:bg-transparent h-14 ">
-      <div className="hidden md:flex items-center -mr-28">
+      <Link
+        to="/"
+        className="hidden md:flex items-center -mr-28 cursor-pointer"
+      >
         <LogoText />
-      </div>
+      </Link>
       <div className="flex items-center justify-center mx-auto w-[80%] ">
         {isLoggedIn ? (
           <div className="flex md:bg-[#1121381F]  rounded-[10px] py-0.5 px-0.5 md:w-auto w-full justify-between">
