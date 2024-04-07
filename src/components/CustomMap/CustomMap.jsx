@@ -10,8 +10,9 @@ import {
 import { List, Select } from "antd";
 import { NavLink } from "react-router-dom";
 import "leaflet/dist/leaflet.css"; // Импортируем CSS Leaflet
+import { useGetRoutesQuery } from "../../api/routesApi";
 
-const roads = [
+const initialRoads = [
   {
     id: 1,
     name: "Маршрут 1",
@@ -31,6 +32,25 @@ const roads = [
 ];
 
 export const CustomMap = () => {
+  const { data, isLoading, isSuccess } = useGetRoutesQuery();
+
+  const [roads, setRoads] = useState(initialRoads);
+
+  useEffect(() => {
+    if (isSuccess) {
+      console.log(data);
+      setRoads(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (data) {
+      const routeId = data[0].id;
+      setSelectedRouteId(routeId);
+      setRoad(roads.find((road) => road.id === routeId));
+    }
+  }, [roads]);
+
   const mapRef = useRef(null);
   const [road, setRoad] = useState(roads[0]);
   const [selectedRouteId, setSelectedRouteId] = useState(1);
@@ -72,7 +92,9 @@ export const CustomMap = () => {
     setRoad(roads.find((road) => road.id === id));
   };
 
-  return (
+  return isLoading ? (
+    <div>loading....</div>
+  ) : (
     <div className=" z-0 flex flex-col items-center justify-center w-full px-8 relative mt-28 ">
       <MapContainer
         ref={mapRef}
