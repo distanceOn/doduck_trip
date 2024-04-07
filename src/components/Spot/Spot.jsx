@@ -34,7 +34,7 @@ const Spot = ({ id }) => {
             </Row>
 
             <Space size={16}>
-              <Button type="primary">Забронировать</Button>
+              <Button type="primary">dddsdsdsd</Button>
               <Button type="link">Подробнее</Button>
             </Space>
           </Card>
