@@ -73,14 +73,14 @@ export const CustomMap = () => {
   };
 
   return (
-    <div className=" z-0 flex flex-col items-center justify-center w-full px-8 relative mt-28 ">
+    <div className=" z-0 flex flex-col items-center justify-center w-full px-4 relative  md:mt-[80px] mt-10">
       <MapContainer
         ref={mapRef}
         center={[45.03547, 38.975313]}
         zoom={13}
         style={{
           width: "100%",
-          height: "400px",
+          height: "600px",
           borderRadius: "10px",
           zIndex: 1,
         }}
@@ -119,16 +119,24 @@ export const CustomMap = () => {
           </Select.Option>
         ))}
       </Select>
-      <List
-        className="p-2"
-        itemLayout="horizontal"
-        dataSource={road.points}
-        renderItem={(item) => (
-          <List.Item>
-            <NavLink to={"/places/" + item.id}>{item.address}</NavLink>
-          </List.Item>
-        )}
-      />
+      <div className="mt-6 w-full rounded-xl shadow-lg overflow-hidden">
+        <List
+          className="text-center bg-gray-50"
+          itemLayout="horizontal"
+          dataSource={road.points}
+          renderItem={(item) => (
+            <List.Item className="flex justify-center items-center bg-white hover:bg-gray-100 transition duration-300">
+              <NavLink
+                to={"/places/" + item.id}
+                className="text-[#1C4D4B] hover:text-[#BBCAC9] font-bold text-lg p-2 font-sans  w-full "
+              >
+                {item.address}
+              </NavLink>
+            </List.Item>
+          )}
+        />
+      </div>
+      <div className="flex h-20 md:h-0"></div>
     </div>
   );
 };
