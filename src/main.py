@@ -6,6 +6,7 @@ from fastapi import FastAPI, HTTPException, status, Request, Body, Depends
 from fastapi.security import HTTPBasicCredentials, HTTPBasic
 from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
 from loguru import logger
+from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.responses import Response, JSONResponse
 
@@ -16,11 +17,20 @@ from data.config import SECRET_KEY, ALGORITHM
 from data.methods.users import UserRepository
 from data.models import User
 
-app = FastAPI(debug=True)
+app = FastAPI(title="DoDuckTrip", version="1.0.0")
 security = HTTPBasic()
 credentials = Depends(security)
 
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 app.include_router(v1_router)
 
 # Создаем сериализатор для безопасного хранения данных в сессии

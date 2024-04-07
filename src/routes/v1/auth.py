@@ -1,67 +1,71 @@
-from fastapi import HTTPException, status, Request, Body, Depends, APIRouter
-from fastapi.security import HTTPBasicCredentials
-from starlette.responses import Response, JSONResponse
+from fastapi import HTTPException, status, Body, Depends, APIRouter
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from pydantic import BaseModel
+from starlette.responses import JSONResponse
+from datetime import timedelta
 
-from src.routes.v1.utils import security, create_session, get_authenticated_user_from_session_token, serializer, \
-    sessions, get_session_token
-from data.methods.users import UserRepository
+from data.config import ACCESS_TOKEN_EXPIRE_MINUTES
+from data.methods.users import UserRepository, pwd_context
 from data.models import User
+from src.routes.v1.utils import create_access_token, authenticate_user
 
 router = APIRouter()
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-@router.post("/login")
-async def login(response: Response, credentials: HTTPBasicCredentials = Depends(security)):
-    user = await UserRepository.get_by_email(credentials.username)
-    if not user or user.password != credentials.password:
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+
+@router.post("/token")
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    user = await authenticate_user(form_data.username, form_data.password)
+    if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Basic"},
+            headers={"WWW-Authenticate": "Bearer"},
         )
-    # Создаем сессию для пользователя
-    session_token = create_session(user.id)
-    response.set_cookie(key="session_token", value=session_token, httponly=True, secure=True)
-    return JSONResponse(content={"message": "Logged in successfully", "session_token": session_token}, status_code=200)
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.username}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.get("/protected")
-async def protected_endpoint(user: User = Depends(get_authenticated_user_from_session_token)):
-    if user is None:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authenticated")
-    return JSONResponse(content={
-        "message": "This user can connect to a protected endpoint after successfully authenticated",
-        "user": user.to_dict()}, status_code=200)
+class LoginForm(BaseModel):
+    username: str
+    password: str
+
+
+@router.post("/login")
+async def login(form_data: LoginForm = Body(...)):
+    # Аутентификация пользователя
+    user = await UserRepository.get_by_username(form_data.username)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    # Создание токена доступа
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.username}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer", "user": user.to_dict()}
 
 
 @router.post("/signup")
-async def sign_up(response: Response, email: str = Body(...), password: str = Body(...), username: str = Body(...)):
-    try:
-        # Проверка существования пользователя с таким email или username
-        existing_email_user = await UserRepository.get_by_email(email)
-        if existing_email_user:
-            raise HTTPException(status_code=400, detail="Email is already registered")
-
-        # Также стоит рассмотреть проверку на уникальность username
-
-        # Создание нового пользователя с обязательными параметрами
-        user = await UserRepository.add_user(email=email, password=password, username=username)
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
-
-    # Создаем сессию для нового пользователя
-    session_token = create_session(user.id)
-    response.set_cookie(key="session_token", value=session_token, httponly=True, secure=True)
-    return JSONResponse(status_code=200,
-                        content={"message": "User registered and logged in successfully",
-                                 "session_token": session_token})
+async def sign_up(email: str = Body(...), password: str = Body(...), username: str = Body(...)):
+    user = await UserRepository.add_user(username=username, email=email, password=password)
+    if not user:
+        raise HTTPException(status_code=400, detail="Email or username is already registered")
+    return JSONResponse(status_code=200, content={"message": "User successfully registered"})
 
 
 @router.post("/logout")
-async def logout(response: Response, session_token: str = Depends(get_session_token)):
-    if session_token not in sessions:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
-    sessions.pop(session_token)
-    # Удаление куки
-    response.delete_cookie("session_token")
-    return JSONResponse(status_code=200, content={"message": "Logged out successfully", "session_token": session_token})
+async def logout():
+    # JWT токен не требует логики выхода из системы на сервере, так как клиент должен просто удалить токен
+    return JSONResponse(status_code=200, content={"message": "Successfully logged out"})

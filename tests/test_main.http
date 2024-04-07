@@ -7,13 +7,13 @@ Accept: application/json
 ###
 
 ### Регистрация пользователя
-POST http://127.0.0.1:8000/signup
+POST https://ff83-46-18-203-145.ngrok-free.app/api/v1/auth/signup
 Content-Type: application/json
 
 {
-  "username": "admin",
-  "email": "admin@example.com",
-  "password": "adminpassword"
+  "username": "admin1",
+  "email": "admin1@example.com",
+  "password": "admin1password"
 }
 
 ### Успешный вход в систему

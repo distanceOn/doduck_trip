@@ -1,3 +1,5 @@
+from typing import List
+
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import selectinload
@@ -19,7 +21,7 @@ class ServiceRepository:
                 raise e
 
     @staticmethod
-    async def get_services_by_spot(spot_id: int):
+    async def get_services_by_spot(spot_id: int) -> List[SpotService]:
         async with AsyncSessionLocal() as session:
             result = await session.execute(
                 select(SpotService).where(SpotService.spot_id == spot_id).options(

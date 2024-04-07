@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import HTTPException
 from sqlalchemy import update
 from sqlalchemy.future import select
@@ -6,14 +8,16 @@ from sqlalchemy.orm import selectinload
 
 from data.models import AsyncSessionLocal, User
 
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 
 class UserRepository:
     @staticmethod
     async def add_user(username: str, email: str, password: str, first_name: str = None, last_name: str = None,
                        city: str = None, role: str = 'user') -> User:
-        """
-        Добавляет нового пользователя в базу данных.
-        """
+        hashed_password = pwd_context.hash(password)  # Хеширование пароля
         async with AsyncSessionLocal() as session:
             try:
                 new_user = User(
@@ -22,7 +26,7 @@ class UserRepository:
                     last_name=last_name,
                     city=city,
                     email=email,
-                    password=password,
+                    password=hashed_password,  # Сохранение хешированного пароля
                     role=role
                 )
                 session.add(new_user)
@@ -57,6 +61,18 @@ class UserRepository:
                 return user
             except SQLAlchemyError as e:
                 raise e
+
+    @staticmethod
+    async def verify_user(username: str, password: str) -> bool:
+        async with AsyncSessionLocal() as session:
+            try:
+                result = await session.execute(select(User).where(User.username == username))
+                user = result.scalars().first()
+                if user and pwd_context.verify(password, user.password):  # Проверка пароля
+                    return True
+                return False
+            except SQLAlchemyError:
+                return False
 
     @staticmethod
     async def update_user(user_id: int, **kwargs) -> User:
@@ -96,3 +112,15 @@ class UserRepository:
                 return [user.to_dict() for user in users]
             except SQLAlchemyError as e:
                 raise HTTPException(status_code=400, detail=str(e))
+
+    @staticmethod
+    async def get_by_username_password(username: str, password: str) -> Any | None:
+        async with AsyncSessionLocal() as session:
+            try:
+                result = await session.execute(select(User).where(User.username == username))
+                user = result.scalars().first()
+                if user and pwd_context.verify(password, user.password):  # Проверка пароля
+                    return user
+                return None
+            except SQLAlchemyError:
+                return None

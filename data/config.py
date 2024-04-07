@@ -18,6 +18,9 @@ ALCHEMY_DATABASE_URL = env.str("ALCHEMY_DATABASE_URL", None)
 
 SECRET_KEY = env.str("SECRET_KEY", secrets.token_urlsafe(32))
 ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+
 LOG_DIR = env.str("LOG_DIR", "logs")
 LOG_LEVEL = env.str("LOG_LEVEL", "INFO")
 

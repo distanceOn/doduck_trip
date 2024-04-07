@@ -2,7 +2,9 @@ from typing import List
 
 from fastapi import APIRouter, Body
 from sqlalchemy import insert
+from starlette.responses import JSONResponse
 
+from data.methods.routes import RouteRepository
 from data.models import Route, AsyncSessionLocal, route_spot_association
 
 router = APIRouter()
@@ -42,3 +44,15 @@ async def create_route(
         await session.commit()
 
         return new_route
+
+
+@router.get("/all")
+async def get_all():
+    routes = await RouteRepository.get_all()
+    return JSONResponse(status_code=200, content=routes)  # noqa: E501 routes
+
+
+@router.get("/{route_id}")
+async def get_route(route_id: int):
+    routes = await RouteRepository.get_route(route_id)
+    return JSONResponse(status_code=200, content=routes)

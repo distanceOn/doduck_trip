@@ -15,7 +15,8 @@ Base = declarative_base()
 # Вспомогательная таблица для связи многие-ко-многим между Route и Spot
 route_spot_association = Table('route_spot_association', Base.metadata,
                                Column('route_id', ForeignKey('routes.id'), primary_key=True),
-                               Column('spot_id', ForeignKey('spots.id'), primary_key=True)
+                               Column('spot_id', ForeignKey('spots.id'), primary_key=True),
+                               Column('order', Integer)  # Добавляем колонку для сохранения порядка точек в маршруте
                                )
 
 spot_interest_association = Table(
@@ -102,6 +103,29 @@ class SpotService(Base):
     spot = relationship("Spot", back_populates="services")
     standard_service = relationship("StandardService")
 
+    def to_dict(self):
+        if self.is_custom:
+            res = {
+                "id": self.id,
+                "spot_id": self.spot_id,
+                "service_id": self.service_id,
+                "description": self.description,
+                "price": self.price,
+                "is_custom": self.is_custom,
+                "name": self.custom_name,
+            }
+        else:
+            res = {
+                "id": self.id,
+                "spot_id": self.spot_id,
+                "service_id": self.service_id,
+                "description": self.standard_service.description,
+                "price": self.price,
+                "is_custom": self.is_custom,
+                "name": self.standard_service.name,
+            }
+        return res
+
 
 class SpotPhoto(Base):
     __tablename__ = 'spot_photos'
@@ -125,6 +149,19 @@ class Route(Base):
 
     # Связь многие-ко-многим с Spot через вспомогательную таблицу
     waypoints = relationship('Spot', secondary=route_spot_association, back_populates="routes")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "starting_point": self.starting_point,
+            "ending_point": self.ending_point,
+            "distance": self.distance,
+            "estimated_time": self.estimated_time,
+            "difficulty_level": self.difficulty_level,
+            "waypoints": [spot.id for spot in self.waypoints],
+        }
 
 
 class Interest(Base):

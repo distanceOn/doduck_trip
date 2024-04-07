@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi import APIRouter, HTTPException, Depends, Body
+from starlette.responses import JSONResponse
 
 from data.methods.services import ServiceRepository
 from data.models import SpotService
@@ -21,6 +22,7 @@ async def add_service(spot_id: int, service_data: dict = Body(...)):
 async def get_services(spot_id: int):
     try:
         services = await ServiceRepository.get_services_by_spot(spot_id)
-        return services
+        print(services)
+        return JSONResponse(status_code=200, content=[service.to_dict() for service in services])
     except Exception as e:
         raise HTTPException(status_code=404, detail=str(e))

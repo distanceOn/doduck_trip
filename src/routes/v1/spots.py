@@ -94,30 +94,3 @@ async def get_spot(spot_id: int):
                                                   ],
                                                   "rating": spot.rating
                                                   })
-
-# @router.put("/{spot_id}", status_code=200)
-# async def update_spot(
-#         spot_id: int,
-#         name: str = Body(None),
-#         description: str = Body(None),
-#         location: str = Body(None),
-#         type: # str = Body(None),
-#         photos: list = Body(None),
-#         amenities: str = Body(None),
-#         rating: float = Body(None),
-# ):
-#     await SpotRepository.update_spot(
-#         spot_id=spot_id,
-#         name=name,
-#         description=description,
-#         location=location,
-#         type=type,
-#         photos=photos,
-#         amenities=amenities,
-#         rating=rating,
-#     )
-#     spot = await SpotRepository.get_spot_by_id(spot_id)
-#     return JSONResponse(status_code=301, content={"id": spot.id, "name": spot.name, "description": spot.description,
-#                                                   "location": spot.location, "type": spot.type,
-#                                                   "photos": [photo.photo_url for photo in spot.photos],
-#                                                   "amenities": spot.amenities, "rating": spot.rating})
