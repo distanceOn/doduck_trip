@@ -54,7 +54,17 @@ export const CustomMap = () => {
   const mapRef = useRef(null);
   const [road, setRoad] = useState(roads[0]);
   const [selectedRouteId, setSelectedRouteId] = useState(1);
+  useEffect(() => {
+    // Code to manipulate the map, existing in your useEffect
 
+    // Removing Leaflet attribution
+    const leafletAttribution = document.querySelector(
+      ".leaflet-control-attribution"
+    );
+    if (leafletAttribution) {
+      leafletAttribution.style.display = "none";
+    }
+  }, [road]);
   useEffect(() => {
     if (!mapRef.current) {
       return;
@@ -102,7 +112,7 @@ export const CustomMap = () => {
         zoom={13}
         style={{
           width: "100%",
-          height: "400px",
+          height: "600px",
           borderRadius: "10px",
           zIndex: 1,
         }}
@@ -141,16 +151,24 @@ export const CustomMap = () => {
           </Select.Option>
         ))}
       </Select>
-      <List
-        className="p-2"
-        itemLayout="horizontal"
-        dataSource={road.points}
-        renderItem={(item) => (
-          <List.Item>
-            <NavLink to={"/places/" + item.id}>{item.address}</NavLink>
-          </List.Item>
-        )}
-      />
+      <div className="mt-6 w-full rounded-xl shadow-lg overflow-hidden">
+        <List
+          className="text-center bg-gray-50"
+          itemLayout="horizontal"
+          dataSource={road.points}
+          renderItem={(item) => (
+            <List.Item className="flex justify-center items-center bg-white hover:bg-gray-100 transition duration-300">
+              <NavLink
+                to={"/places/" + item.id}
+                className="text-[#1C4D4B] hover:text-[#BBCAC9] font-bold text-lg p-2 font-sans  w-full "
+              >
+                {item.address}
+              </NavLink>
+            </List.Item>
+          )}
+        />
+      </div>
+      <div className="flex h-20 md:h-0"></div>
     </div>
   );
 };

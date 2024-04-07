@@ -6,6 +6,8 @@ import {
   photo4,
   photo5,
   photo6,
+  photo7,
+  photo8,
 } from "../../assets/img/index";
 
 const AboutPage = () => {
@@ -55,7 +57,7 @@ const AboutPage = () => {
               <img src={photo6} alt="photo" className="w-16 h-16 rounded" />
             </div>
           </div>
-          <div className="flex flex-col mt-5 sm:mt-[-6rem] sm:w-60 w-74 h-72 sm:ml-5 ml-0">
+          <div className="flex flex-col mt-5 sm:mt-[-6rem] sm:w-60 w-74 h-64 sm:ml-5 ml-0">
             <h className=" text-3xl font-sans text-[#161C2D] font-bold">
               Выберите рекомендуемый маршрут или создайте свой.
             </h>
@@ -70,18 +72,32 @@ const AboutPage = () => {
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-center w-full">
-        <div className="flex flex-col mt-5 sm:mt-0 sm:w-[240px] w-[296px] h-72 sm:ml-5 ml-0 ">
-          <h className=" text-3xl font-sans text-[#161C2D] font-bold">
-            Удобная бронь и оплата прямо в пути!
-          </h>
-          <p className="font-sans text-[#161C2D]  opacity-70  mt-3">
-            Подберëм ближайшую стоянку для вас и вашего транспорта. Сотни
-            экскурсий, мест для отдыха кафе и ресторанов в единой системе
-          </p>
+      <div className="flex flex-col items-center justify-center ">
+        <div className="flex flex-col sm:flex-row mt-5 sm:mt-0 sm:w-[555px] xs:w-[390px] w-[280px] ">
+          <div className="flex flex-col  sm:w-60 w-74 mb-10 sm:mr-12 mr-0">
+            <h className=" text-3xl font-sans text-[#161C2D] font-bold">
+              Удобная бронь и оплата прямо в пути!
+            </h>
+            <p className="font-sans text-[#161C2D]  opacity-70  mt-3">
+              Подберëм ближайшую стоянку для вас и вашего транспорта. Сотни
+              экскурсий, мест для отдыха кафе и ресторанов в единой системе
+            </p>
+          </div>
+          <div className=" w-74 flex flex-wrap justify-between">
+            <img
+              src={photo7}
+              alt="photo"
+              className="w-32 h-32 rounded flex  justify-end"
+            />
+            <img
+              src={photo8}
+              alt="photo"
+              className="w-32 h-32 rounded  mt-14 ml-36 "
+            />
+          </div>
         </div>
-        <div className=" w-74 flex "></div>
       </div>
+      <div className="flex h-20 md:h-0"></div>
     </div>
   );
 };
