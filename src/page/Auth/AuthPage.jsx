@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, Tabs, Form, Input, Button } from "antd";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/slices/userSlice";
+import { useSignupMutation } from "../../api/authApi";
 
 const AuthPage = () => {
   const dispatch = useDispatch();
+  const [signup, { isLoading, isSuccess }] = useSignupMutation();
 
   const [activeTab, setActiveTab] = useState("1");
 
@@ -20,6 +22,29 @@ const AuthPage = () => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
+  const onRegisterFinish = (values) => {
+    const { name, email, password } = values;
+    signup({
+      email,
+      password,
+      username: name,
+    });
+  };
+
+  const onRegisterFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      console.log("УРААА");
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    console.log(isLoading);
+  }, [isLoading]);
 
   const items = [
     {
@@ -60,8 +85,8 @@ const AuthPage = () => {
       children: (
         <Form
           name="registration"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
+          onFinish={onRegisterFinish}
+          onFinishFailed={onRegisterFinishFailed}
         >
           {/* Поля формы регистрации */}
           <Form.Item
@@ -86,7 +111,7 @@ const AuthPage = () => {
             <Input.Password />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
+            <Button loading={isLoading} type="primary" htmlType="submit" block>
               Зарегистрироваться
             </Button>
           </Form.Item>
