@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { Card, Tabs, Form, Input, Button } from "antd";
 import { useDispatch } from "react-redux";
-import { login } from "../../store/slices/userSlice";
-import { useSignupMutation } from "../../api/authApi";
+import { login, setUser } from "../../store/slices/userSlice";
+import { useSigninMutation, useSignupMutation } from "../../api/authApi";
 
 const AuthPage = () => {
   const dispatch = useDispatch();
   const [signup, { isLoading, isSuccess }] = useSignupMutation();
+  const [signin, { isLoading: loginLoading, isSuccess: loginSuccess }] =
+    useSigninMutation();
 
   const [activeTab, setActiveTab] = useState("1");
 
@@ -14,22 +16,37 @@ const AuthPage = () => {
     setActiveTab(key);
   };
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
-    dispatch(login());
+  const onEntryFinish = async (values) => {
+    const { name, password } = values;
+    console.log(values);
+    try {
+      const result = await signin({
+        username: name,
+        password,
+      }).unwrap();
+
+      dispatch(setUser(result.user));
+    } catch (error) {
+      console.log("Error:", error);
+    }
   };
 
-  const onFinishFailed = (errorInfo) => {
+  const onEntryFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
-  const onRegisterFinish = (values) => {
+  const onRegisterFinish = async (values) => {
     const { name, email, password } = values;
-    signup({
-      email,
-      password,
-      username: name,
-    });
+    try {
+      const result = await signup({
+        email,
+        password,
+        username: name,
+      }).unwrap();
+      dispatch(setUser(result.user));
+    } catch (error) {
+      console.log("Error:", error);
+    }
   };
 
   const onRegisterFinishFailed = (errorInfo) => {
@@ -37,14 +54,10 @@ const AuthPage = () => {
   };
 
   useEffect(() => {
-    if (isSuccess) {
-      console.log("УРААА");
+    if (loginSuccess || isSuccess) {
+      dispatch(login());
     }
-  }, [isSuccess]);
-
-  useEffect(() => {
-    console.log(isLoading);
-  }, [isLoading]);
+  }, [loginSuccess, isSuccess]);
 
   const items = [
     {
@@ -54,17 +67,24 @@ const AuthPage = () => {
         <Form
           name="login"
           initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
+          onFinish={onEntryFinish}
+          onFinishFailed={onEntryFinishFailed}
         >
           <Form.Item
-            label="Email"
-            name="email"
-            rules={[{ required: true, message: "Пожалуйста, введите email!" }]}
+            label="Логин"
+            name="name"
+            initialValue="user111"
+            rules={[
+              {
+                required: true,
+                message: "Пожалуйста, введите имя пользователя!",
+              },
+            ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
+            initialValue="useruser"
             label="Пароль"
             name="password"
             rules={[{ required: true, message: "Пожалуйста, введите пароль!" }]}
@@ -72,7 +92,12 @@ const AuthPage = () => {
             <Input.Password />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
+            <Button
+              loading={loginLoading}
+              type="primary"
+              htmlType="submit"
+              block
+            >
               Войти
             </Button>
           </Form.Item>
