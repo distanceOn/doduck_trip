@@ -1,60 +1,92 @@
-import { Col, Row, Typography, Card, Button, Space } from "antd";
-import { spotData } from "./spotMock";
+import { Col, Row, Card, List, Image, Rate } from "antd";
+import { useGetPlaceQuery } from "../../api/routesApi";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import Title from "antd/es/typography/Title";
+import Paragraph from "antd/es/typography/Paragraph";
 
 // eslint-disable-next-line react/prop-types
-const Spot = ({ id }) => {
-  return (
-    <div className="pt-20">
-      <Row gutter={16}>
-        <Col xs={24} md={16}>
-          <Card
-            title={spotData.title + " " + id}
-            cover={<img src={spotData.image} alt={spotData.title} />}
-          >
-            <Typography.Paragraph>{spotData.description}</Typography.Paragraph>
+const Spot = () => {
+  const { id } = useParams();
 
-            <Row gutter={16}>
-              {spotData.features.map((feature) => (
-                <Col xs={24} sm={12} md={8} key={feature.id}>
-                  <Card
-                    title={feature.title}
-                    bordered={false}
-                    style={{
-                      backgroundColor: feature.color,
-                      color: "white",
-                      borderRadius: "8px",
-                    }}
-                  >
-                    <Typography.Paragraph>
-                      {feature.description}
-                    </Typography.Paragraph>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
+  const { data, isLoading, isSuccess } = useGetPlaceQuery(id);
 
-            <Space size={16}>
-              <Button type="primary">dddsdsdsd</Button>
-              <Button type="link">Подробнее</Button>
-            </Space>
-          </Card>
-        </Col>
-        <Col xs={24} md={8}>
-          <Card title="Контакты">
-            <Typography.Paragraph>
-              {spotData.contact.address}
-              <br />
-              {spotData.contact.phone}
-              <br />
-              {spotData.contact.email}
-            </Typography.Paragraph>
-          </Card>
-          <Card title="Как добраться">
-            <Typography.Paragraph>{spotData.directions}</Typography.Paragraph>
-          </Card>
-        </Col>
-      </Row>
-    </div>
+  useEffect(() => {
+    if (isSuccess) {
+      console.log(data);
+    }
+  }, [data]);
+
+  return isLoading ? (
+    <div>loading...</div>
+  ) : (
+    <Row gutter={[16, 16]} style={{ margin: "16px" }}>
+      <Col span={12}>
+        <Image
+          src={data.photos[0]}
+          alt={data.name}
+          width="100%"
+          style={{ borderRadius: "8px" }}
+        />
+      </Col>
+      <Col span={12}>
+        <Title level={3} style={{ marginBottom: "8px" }}>
+          {data.name}
+        </Title>
+        <Paragraph style={{ marginBottom: "8px" }}>
+          {data.description}
+        </Paragraph>
+        <Rate value={data.rating} disabled style={{ marginBottom: "8px" }} />
+        <Paragraph style={{ marginBottom: "0" }}>
+          Контакт: {data.contact}
+        </Paragraph>
+      </Col>
+      <Col span={24}>
+        <Title level={4} style={{ marginBottom: "16px" }}>
+          Интересные места
+        </Title>
+        <Row gutter={[16, 16]}>
+          {data.interests.map((interest) => (
+            <Col span={8} key={interest.name}>
+              <Card
+                title={interest.name}
+                cover={
+                  <Image
+                    src={data.photos[0]}
+                    alt={interest.name}
+                    style={{ borderRadius: "8px" }}
+                  />
+                }
+                style={{ borderRadius: "8px", marginBottom: "16px" }}
+              >
+                <Paragraph>{interest.description}</Paragraph>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </Col>
+      <Col span={24}>
+        <Title level={4} style={{ marginBottom: "16px" }}>
+          Услуги
+        </Title>
+        <List
+          dataSource={data.services}
+          renderItem={(service) => (
+            <List.Item style={{ marginBottom: "16px" }}>
+              <List.Item.Meta
+                title={service.name}
+                description={service.description}
+              />
+              {service.price && (
+                <Paragraph style={{ marginTop: "8px" }}>
+                  Цена: {service.price}
+                </Paragraph>
+              )}
+            </List.Item>
+          )}
+        />
+      </Col>
+    </Row>
   );
 };
 

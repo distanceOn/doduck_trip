@@ -5,10 +5,10 @@ import Resort from "../../components/Resort/Resort";
 
 export const Place = () => {
   const { id } = useParams();
-  const type = "resort";
+  const type = "spot";
 
   if (type === "spot") {
-    return <Spot id={id} />;
+    return <Spot />;
   }
   if (type === "hub") {
     return <Hub id={id} />;

@@ -11,8 +11,12 @@ const routesApi = createApi({
     getPlaces: build.query({
       query: () => "spots/all",
     }),
+    getPlace: build.query({
+      query: (id) => `spots/${id}`,
+    }),
   }),
 });
 
-export const { useGetRoutesQuery, useGetPlacesQuery } = routesApi;
+export const { useGetRoutesQuery, useGetPlacesQuery, useGetPlaceQuery } =
+  routesApi;
 export default routesApi;
